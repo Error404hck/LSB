@@ -34,7 +34,7 @@ import argparse
 # Argument parser :
 parser = argparse.ArgumentParser(description="Error404")
 parser.add_argument('-f', '--file', type=str, default="", help="Define your path file") #--> select picture
-parser.add_argument('-P', '--pattern', type=str, default="", help="Make a pattern for your search") #--> choose pattern
+parser.add_argument('-P', '--pattern', type=str, default="", help="Make a pattern for your search with 'r','v','b','a'") #--> choose pattern
 parser.add_argument('-s', '--switch', action='store_true' , default=False, help="Switches all the character pattern for all possibilities with 'r','v','b','a'") #--> activate switch possibilities
 parser.add_argument('-d', '--dimension', type=str, default=False, help="Define the search block in x (ex : 0x100)") #--> choose the research dimension
 parser.add_argument('-t', '--turn', action='store_true', default=False, help="Turn image in other sense") #--> turn image in other sense
