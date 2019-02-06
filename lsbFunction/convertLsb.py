@@ -27,10 +27,10 @@
 
 from PIL import Image
 from sys import argv
-from principale import pic
+from setup import pic
 
 # FONCTION POUR TROUVER LE FLAG :
-def writeFile(typePixel="rvb", pic="", turnImage=False, x_depart=0, x_fin=pic.height, y_depart=0 , y_fin=pic.width):
+def writeFile(typePixel="rvb", pic="", turnImage=False, switchBit=False, notBit=False, x_depart=0, x_fin=pic.height, y_depart=0 , y_fin=pic.width):
     nameFile = "asciiDir/" + (typePixel.upper().replace(" ","")) + str(x_depart) + "x" + str(y_fin) + ".txt"
     asciiTab = ""
     flag = ""
@@ -63,12 +63,14 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, x_depart=0, x_fin=pic.he
             for check in typePixel :
                 
                 # RED PIXEL :
-                if check == "r" : 
-                    asciiTab+=(lsbPixel(r))#--> Get lsb and adding to the list for red color
+                if check == "r" :    
+                    asciiTab+=(lsbPixel(r, notBit))#--> Get lsb and adding to the list for red color
                     if len(asciiTab) == 8 :
+                        if switchBit == False :
+                            wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal               
+                        elif switchBit == True :
+                            wrAsc , wrDec = convertBinToAsciiSwitchBit(asciiTab)#--> Make a reverse bit and get the binary conversion to ASCII and binary to decimal
 
-                        wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal               
-                        
                         # Print Flag :
                         flag = printFlag(flag, wrDec, wrAsc)
 
@@ -78,10 +80,13 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, x_depart=0, x_fin=pic.he
 
                 # GREEN PIXEL :
                 if check == "v" :     
-                    asciiTab+=(lsbPixel(v))#--> Get lsb and adding to the list for green color
+                    asciiTab+=(lsbPixel(v, notBit))#--> Get lsb and adding to the list for green color
                     if len(asciiTab) == 8 :
                         
-                        wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal
+                        if switchBit == False :
+                            wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal               
+                        elif switchBit == True :
+                            wrAsc , wrDec = convertBinToAsciiSwitchBit(asciiTab)#--> Make a reverse bit and get the binary conversion to ASCII and binary to decimal
                         
                         # Print Flag :
                         flag = printFlag(flag, wrDec, wrAsc)
@@ -92,10 +97,13 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, x_depart=0, x_fin=pic.he
 
                 # BLUE PIXEL :
                 if check == "b" :
-                    asciiTab += (lsbPixel(b))#--> Get lsb and adding to the list for blue color
+                    asciiTab += (lsbPixel(b, notBit))#--> Get lsb and adding to the list for blue color
                     if len(asciiTab) == 8 :
                         
-                        wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal
+                        if switchBit == False :
+                            wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal               
+                        elif switchBit == True :
+                            wrAsc , wrDec = convertBinToAsciiSwitchBit(asciiTab)#--> Make a reverse bit and get the binary conversion to ASCII and binary to decimal
 
                         # Print Flag :
                         flag = printFlag(flag, wrDec, wrAsc)
@@ -107,10 +115,13 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, x_depart=0, x_fin=pic.he
 
                 # TRANSPARENCY :
                 if check == "a" and len(pixel) > 3: 
-                    asciiTab += (lsbPixel(a))#--> Get lsb and adding to the list for transparency
+                    asciiTab += (lsbPixel(a, notBit))#--> Get lsb and adding to the list for transparency
                     if len(asciiTab) == 8 :
                         
-                        wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal
+                        if switchBit == False :
+                            wrAsc , wrDec = convertBinToAscii(asciiTab)#--> Get the binary conversion to ASCII and binary to decimal               
+                        elif switchBit == True :
+                            wrAsc , wrDec = convertBinToAsciiSwitchBit(asciiTab)#--> Make a reverse bit and get the binary conversion to ASCII and binary to decimal
 
                         # Print Flag :
                         flag = printFlag(flag, wrDec, wrAsc)
@@ -125,15 +136,32 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, x_depart=0, x_fin=pic.he
     fichier.close()
 
 # Function to get LSB with modulo
-def lsbPixel(pix):
-    if pix % 2 == 0 :
-        return "0"
-    
-    elif pix % 2 == 1 :
-        return "1"
+def lsbPixel(pix, notBit):
+    if notBit == False :
+        if pix % 2 == 0 :
+            return "0"
+        
+        elif pix % 2 == 1 :
+            return "1"
+
+    elif notBit == True : 
+        #print("notBit")
+        if pix % 2 == 0 :
+            return "1"
+        
+        elif pix % 2 == 1 :
+            return "0"
+
+
     
 # Function to convert bin to ascii and bin to decimal
 def convertBinToAscii(pix):
+    wrDec = int(pix,2)
+    wrAsc = chr(wrDec)
+    return wrAsc , wrDec
+
+def convertBinToAsciiSwitchBit(pix):
+    pix = "".join(reversed(pix))
     wrDec = int(pix,2)
     wrAsc = chr(wrDec)
     return wrAsc , wrDec

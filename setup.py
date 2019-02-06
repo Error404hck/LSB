@@ -35,9 +35,12 @@ import argparse
 parser = argparse.ArgumentParser(description="Error404")
 parser.add_argument('-f', '--file', type=str, default="", help="Define your path file") #--> select picture
 parser.add_argument('-P', '--pattern', type=str, default="", help="Make a pattern for your search with 'r','v','b','a'") #--> choose pattern
-parser.add_argument('-s', '--switch', action='store_true' , default=False, help="Switches all the character pattern for all possibilities with 'r','v','b','a'") #--> activate switch possibilities
+parser.add_argument('-p', '--possibilities', action='store_true' , default=False, help="Test all the character pattern for all possibilities with 'r','v','b','a'") #--> activate switch possibilities
 parser.add_argument('-d', '--dimension', type=str, default=False, help="Define the search block in x (ex : 0x100)") #--> choose the research dimension
 parser.add_argument('-t', '--turn', action='store_true', default=False, help="Turn image in other sense") #--> turn image in other sense
+parser.add_argument('-s', '--switch', action='store_true', default=False, help="Reverse the 8 bit") #--> reverse the bit
+parser.add_argument('-n', '--not', action='store_true', default=False, help="Change bit 1 on 0 and bit 0 on bit one") #--> reverse the bit
+
 dargs = vars(parser.parse_args())
 ##############################################
 
@@ -45,8 +48,10 @@ dargs = vars(parser.parse_args())
 # Variable :
 fileName = dargs['file']
 pattern  = dargs['pattern']
-switchSystem = dargs['switch']
+possibilitiesSys = dargs['possibilities']
 turnImage = dargs['turn']
+switchBit = dargs['switch']
+notBit = dargs['not']
 try :
     searchBlockX = int(dargs['dimension'].split("x")[0])
     searchBlockY = int(dargs['dimension'].split("x")[1])
@@ -68,23 +73,23 @@ except :
 def stego (pic,pattern) :
     
     # Make all switche possibilities with pattern
-    if switchSystem == True :
+    if possibilitiesSys == True :
         for i in range (1,len(pattern)+1):
             a = (list(itertools.permutations(pattern,i)))
 
             for j in range (0,len(a)):
                 typePixel = "".join(a[j])
                 if searchBlockX == False and searchBlockY == False:
-                    clsb.writeFile(typePixel, pic, turnImage)
+                    clsb.writeFile(typePixel, pic, turnImage, switchBit, notBit)
                 else :
-                    clsb.writeFile(typePixel, pic, turnImage, searchBlockX, searchBlockY , searchBlockX , searchBlockY)
+                    clsb.writeFile(typePixel, pic, turnImage, switchBit, notBit, searchBlockX, searchBlockY , searchBlockX , searchBlockY)
 
     # Make just one possibilities with the pattern
-    elif switchSystem == False :
+    elif possibilitiesSys == False :
         if searchBlockX == False and searchBlockY == False:
-            clsb.writeFile(pattern,pic, turnImage)
+            clsb.writeFile(pattern,pic, turnImage, switchBit, notBit)
         else : 
-            clsb.writeFile(pattern, pic, turnImage, searchBlockX, searchBlockY, searchBlockX, searchBlockY)
+            clsb.writeFile(pattern, pic, turnImage, switchBit, notBit, searchBlockX, searchBlockY, searchBlockX, searchBlockY)
 
 # Play the script :
 if __name__ == "__main__" : 
