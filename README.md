@@ -1,10 +1,12 @@
-# Error404
-# LSB
+# Write by Error404
+# LSB reader
 
 
 You can use for test the "testPicture.png", the flag is : CDAISIFIC{a*dÃ§^b/vT,A$}
 
-Test command : python3 principale.py -f testPicture.png -P rvb -s
+Test command : 
+
+	python3 principale.py -f testPicture.png -P rvb -s
 
 
 
