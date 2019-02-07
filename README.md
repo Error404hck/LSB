@@ -6,7 +6,7 @@ You can use for test the "testPicture.png", the flag is : CDAISIFIC{a*dÃ§^b/vT
 
 Test command : 
 
-	python3 principale.py -f testPicture.png -P rvb -s
+	python3 setup.py -f testPicture.png -P rvb -s
 
 
 
@@ -14,11 +14,15 @@ Test command :
 usage: setup.py [-h] [-f FILE] [-P PATTERN] [-p] [-d DIMENSION] [-t] [-s] [-n]
                 [-j JUMP]
 
-Error404
 
 optional arguments:
+  
   -h, --help            show this help message and exit
+  
+
   -f FILE, --file FILE  Define your path file
+  
+
   -P PATTERN, --pattern PATTERN
                         Make a pattern for your search with 'r','v','b','a'
 			
