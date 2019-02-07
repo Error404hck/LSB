@@ -14,7 +14,7 @@
                     with all possible possibilities.
 
 
-            principale.py
+            setup.py
             lsbFunction/
              |_________: __init__.py
              |_________: convertLsb.py
@@ -40,7 +40,7 @@ parser.add_argument('-d', '--dimension', type=str, default=False, help="Define t
 parser.add_argument('-t', '--turn', action='store_true', default=False, help="Turn image in other sense") #--> turn image in other sense
 parser.add_argument('-s', '--switch', action='store_true', default=False, help="Reverse the 8 bit") #--> reverse the bit
 parser.add_argument('-n', '--not', action='store_true', default=False, help="Change bit 1 on 0 and bit 0 on bit one") #--> reverse the bit
-
+parser.add_argument('-j', '--jump', type=str, default=1, help="Jump from pixel to pixel") #--> jump from pixel to piexel
 dargs = vars(parser.parse_args())
 ##############################################
 
@@ -52,6 +52,7 @@ possibilitiesSys = dargs['possibilities']
 turnImage = dargs['turn']
 switchBit = dargs['switch']
 notBit = dargs['not']
+jump = dargs['jump']
 try :
     searchBlockX = int(dargs['dimension'].split("x")[0])
     searchBlockY = int(dargs['dimension'].split("x")[1])
@@ -80,16 +81,16 @@ def stego (pic,pattern) :
             for j in range (0,len(a)):
                 typePixel = "".join(a[j])
                 if searchBlockX == False and searchBlockY == False:
-                    clsb.writeFile(typePixel, pic, turnImage, switchBit, notBit)
+                    clsb.writeFile(typePixel, pic, jump, turnImage, switchBit, notBit)
                 else :
-                    clsb.writeFile(typePixel, pic, turnImage, switchBit, notBit, searchBlockX, searchBlockY , searchBlockX , searchBlockY)
+                    clsb.writeFile(typePixel, pic, jump, turnImage, switchBit, notBit, searchBlockX, searchBlockY , searchBlockX , searchBlockY)
 
     # Make just one possibilities with the pattern
     elif possibilitiesSys == False :
         if searchBlockX == False and searchBlockY == False:
-            clsb.writeFile(pattern,pic, turnImage, switchBit, notBit)
+            clsb.writeFile(pattern,pic, jump, turnImage, switchBit, notBit)
         else : 
-            clsb.writeFile(pattern, pic, turnImage, switchBit, notBit, searchBlockX, searchBlockY, searchBlockX, searchBlockY)
+            clsb.writeFile(pattern, pic, jump, turnImage, switchBit, notBit, searchBlockX, searchBlockY, searchBlockX, searchBlockY)
 
 # Play the script :
 if __name__ == "__main__" : 

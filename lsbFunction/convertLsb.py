@@ -13,7 +13,7 @@
                 This file contains the function and variable for the search
 
 
-        principale.py
+        setup.py
             lsbFunction/
              |_________: __init__.py
              |_________: convertLsb.py
@@ -28,19 +28,23 @@
 from PIL import Image
 from sys import argv
 from setup import pic
+import time
 
 # FONCTION POUR TROUVER LE FLAG :
-def writeFile(typePixel="rvb", pic="", turnImage=False, switchBit=False, notBit=False, x_depart=0, x_fin=pic.height, y_depart=0 , y_fin=pic.width):
+def writeFile(typePixel="rvb", pic="",jump=1, turnImage=False, switchBit=False, notBit=False, x_depart=0, x_fin=pic.height, y_depart=0 , y_fin=pic.width):
     nameFile = "asciiDir/" + (typePixel.upper().replace(" ","")) + str(x_depart) + "x" + str(y_fin) + ".txt"
     asciiTab = ""
     flag = ""
 
     fichier = open(nameFile, "w")
 
+    #jumpSize = 1
+    #jump = 0
 
     # PARCOUR DE L'IMAGE
+    
     for largeur in range (x_depart, x_fin):
-        for hauteur in range (y_depart, y_fin):
+        for hauteur in range (y_depart, y_fin, int(jump)):
 
             if turnImage == False :
                 pixel = pic.getpixel((hauteur,largeur))
@@ -56,14 +60,14 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, switchBit=False, notBit=
             v = pixel[1]
             b = pixel[2]
 
+
             if len(pixel) > 3 : #--> check if transparency is present
                 a = pixel[3]
-            
-
+                    
+                  
             for check in typePixel :
-                
                 # RED PIXEL :
-                if check == "r" :    
+                if check == "r":    
                     asciiTab+=(lsbPixel(r, notBit))#--> Get lsb and adding to the list for red color
                     if len(asciiTab) == 8 :
                         if switchBit == False :
@@ -79,7 +83,7 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, switchBit=False, notBit=
                         asciiTab = ""
 
                 # GREEN PIXEL :
-                if check == "v" :     
+                if check == "v":
                     asciiTab+=(lsbPixel(v, notBit))#--> Get lsb and adding to the list for green color
                     if len(asciiTab) == 8 :
                         
@@ -96,7 +100,7 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, switchBit=False, notBit=
                         asciiTab = ""
 
                 # BLUE PIXEL :
-                if check == "b" :
+                if check == "b":
                     asciiTab += (lsbPixel(b, notBit))#--> Get lsb and adding to the list for blue color
                     if len(asciiTab) == 8 :
                         
@@ -129,8 +133,7 @@ def writeFile(typePixel="rvb", pic="", turnImage=False, switchBit=False, notBit=
                         # Write File :
                         fichier.write(wrAsc)
                         asciiTab = ""
-
-
+                
 
     print(nameFile + " : " + flag)
     fichier.close()
@@ -170,13 +173,16 @@ def convertBinToAsciiSwitchBit(pix):
 
 # Function to print flag
 def printFlag(flag, wrDec, wrAsc):
-    if wrDec in range(48,57) and len(flag) < 50: #--> char (1-9)
+    lenFlag = 100
+    if wrDec in range(48,57) and len(flag) < lenFlag: #--> char (1-9)
         flag+= wrAsc
-    elif wrDec in range(65,90) and len(flag) < 50 : #--> char (A-Z)
+    elif wrDec in range(65,90) and len(flag) < lenFlag : #--> char (A-Z)
         flag+= wrAsc
-    elif wrDec in range(97,122) and len(flag) < 50 : #--> char (a-z)
+    elif wrDec in range(97,122) and len(flag) < lenFlag : #--> char (a-z)
         flag+= wrAsc
-    elif wrDec in range (123,125) and len(flag) < 50: #--> char ({|})
+    elif wrDec in range (123,125) and len(flag) < lenFlag: #--> char ({|})
+        flag+= wrAsc
+    elif wrDec == 61 and len(flag) < lenFlag: #--> char ({|})
         flag+= wrAsc
 
     return flag
