@@ -1,5 +1,5 @@
 # Write by Error404
-# LSB reader
+# LSB decoder
 
 
 You can use for test the "testPicture.png", the flag is : CDAISIFIC{a*dÃ§^b/vT,A$}
@@ -11,7 +11,8 @@ Test command :
 
 
 
-usage: principale.py [-h] [-f FILE] [-P PATTERN] [-s] [-d DIMENSION] [-t]
+usage: setup.py [-h] [-f FILE] [-P PATTERN] [-p] [-d DIMENSION] [-t] [-s] [-n]
+                [-j JUMP]
 
 Error404
 
@@ -32,5 +33,15 @@ optional arguments:
 
   -d DIMENSION, --dimension DIMENSION
                         Define the search block in x (ex : 0x100)
+
   -t, --turn            Turn image in other sense
+
+  
+  -s, --switch          Reverse the 8 bit
+  
+  
+  -n, --not             Change bit 1 on 0 and bit 0 on bit one
+  
+
+  -j JUMP, --jump JUMP  Jump from pixel to pixel
 
